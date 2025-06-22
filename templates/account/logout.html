@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}  {# allauth will translate strings #}
+
+{% block title %}{% trans "Sign Out" %} – ZebraSync{% endblock %}
+
+{% block content %}
+<div class="panel mx-auto" style="max-width:480px" data-aos="zoom-in">
+  <h2 class="fw-bold text-center mb-4">
+    <i class="bi bi-box-arrow-right me-2"></i>{% trans "Sign Out" %}
+  </h2>
+
+  <p class="text-center mb-4">
+    {% trans "Are you sure you want to sign out?" %}
+  </p>
+
+  <form method="post" action="{% url 'account_logout' %}">
+    {% csrf_token %}
+    <div class="d-grid gap-2">
+      <button class="btn btn-accent" type="submit">{% trans "Sign Out" %}</button>
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-accent">
+        {% trans "Cancel" %}
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+<!-- =========================
+  child template: home.html
+  ========================= -->
+{% extends "base.html" %}
+{% block title %}Welcome to ZebraSync{% endblock %}
+
+{% block content %}
+<div class="glass mx-auto text-center p-5" style="max-width: 600px;" data-aos="zoom-in">
+  <h1 class="fw-bold mb-3 text-accent"> ZebraSync</h1>
+  <p class="lead mb-4">
+    Upload folders as ZIP archives, sync them across devices, and access logs instantly — all in one clean interface.
+  </p>
+  <a href="{% url 'dashboard' %}" class="btn btn-accent btn-sync btn-lg">Launch Dashboard ⟶</a>
+</div>
+{% endblock %}

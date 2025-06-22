@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Sync Job #{{ job.id }} – ZebraSync{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+  :root {
+    --bg-dark: #0d0d0d;
+    --bg-darker: #030303;
+    --green: #00ff88;
+    --green-light: #24ffb3;
+    --yellow: #ffdd57;
+    --red: #ff4a4a;
+    --cyan: #00e0ff;
+  }
+  body {
+    background: radial-gradient(circle at top left, var(--bg-dark) 0%, var(--bg-darker) 70%);
+    font-family: "Fira Code", monospace;
+    color: var(--green);
+  }
+  .glass {
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(0, 255, 136, 0.25);
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 8px 24px rgba(0, 255, 136, 0.15);
+    position: relative;
+  }
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent 0 2px, rgba(255, 255, 255, 0.02) 2px 4px);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  .neon-title {
+    font-size: 2.25rem;
+    font-weight: 900;
+    text-shadow: 0 0 8px var(--green), 0 0 16px var(--green-light);
+    letter-spacing: -0.5px;
+  }
+  .badge-status {
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.825rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge-running { background: var(--yellow); color: #000; }
+  .badge-success { background: var(--green); color: #000; }
+  .badge-failed  { background: var(--red);   color: #fff; }
+  #live-log-box {
+    background-color: #000;
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 1rem;
+    max-height: 450px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    line-height: 1.35rem;
+    box-shadow: 0 0 24px rgba(0, 255, 136, 0.2);
+  }
+  #live-log-box::-webkit-scrollbar { width: 8px; }
+  #live-log-box::-webkit-scrollbar-thumb {
+    background: var(--green);
+    border-radius: 4px;
+  }
+  .log-entry {
+    white-space: pre-wrap;
+    animation: fadeIn 0.25s ease-in;
+  }
+  .log-info    { color: var(--green-light); }
+  .log-warning { color: var(--yellow); }
+  .log-error   { color: var(--red); }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  #progress-track {
+    height: 8px;
+    width: 100%;
+    background: #111;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--green) 0%, var(--cyan) 100%);
+    transition: width 0.5s ease-out;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+  <div class="glass mx-auto" style="max-width: 800px;" data-aos="fade-up">
+    <h2 class="neon-title text-center mb-4"> Sync Job #{{ job.id }}</h2>
+    <div class="d-flex flex-column gap-2 mb-4">
+      <div class="d-flex justify-content-between">
+        <span>Timestamp:</span>
+        <span>{{ job.created_at }}</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <span>Status:</span>
+        <span>
+          {% if job.status == "running" %}
+            <span class="badge-status badge-running">Running</span>
+          {% elif job.status == "done" %}
+            <span class="badge-status badge-success">Success</span>
+          {% else %}
+            <span class="badge-status badge-failed">Failed</span>
+          {% endif %}
+        </span>
+      </div>
+      <div class="d-flex justify-content-between"><span>ZIP:</span><span>{{ job.src_zip.name }}</span></div>
+      <div class="d-flex justify-content-between"><span>Replica:</span><span>{{ job.replica_path|default:"–" }}</span></div>
+    </div>
+    <div id="progress-track"><div id="progress-bar"></div></div>
+    <h5 class="mb-2"><i class="fas fa-terminal"></i> Live Logs</h5>
+    <div id="live-log-box"><div id="log-entries"><span class="text-muted">Waiting for output...</span></div></div>
+    <div class="text-center mt-4">
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-success">← Back to Dashboard</a>
+    </div>
+  </div>
+</section>
+<script>
+  const jobId = "{{ job.id }}";
+  const logBox = document.getElementById("log-entries");
+  const progressBar = document.getElementById("progress-bar");
+
+  async function fetchLogs() {
+    try {
+      const res = await fetch(`/api/logs/${jobId}/`);
+      const data = await res.json();
+
+      logBox.innerHTML = "";
+      data.forEach((line, idx) => {
+        const div = document.createElement("div");
+        div.className = `log-entry log-${line.level.toLowerCase()}`;
+        div.textContent = line.message;
+        logBox.appendChild(div);
+      });
+      logBox.parentElement.scrollTop = logBox.parentElement.scrollHeight;
+
+      const done = data.filter(l => l.message.toLowerCase().includes("completed"))?.length;
+      const total = data.length || 1;
+      const pct = Math.min(100, Math.round((done / total) * 100));
+      progressBar.style.width = pct + "%";
+    } catch (err) {
+      logBox.innerHTML = '<div class="log-entry log-error">⚠ Connection lost...</div>';
+    }
+  }
+
+  fetchLogs();
+  setInterval(fetchLogs, 2000);
+</script>
+{% endblock %}

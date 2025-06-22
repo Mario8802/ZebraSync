@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Plans & Pricing – ZebraSync{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+  body {
+    background: linear-gradient(145deg, #0d0d0d, #000000);
+    font-family: "Fira Code", monospace;
+    color: #00ff88;
+  }
+  .glass {
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #00ff88;
+    border-radius: 1.25rem;
+    padding: 2rem;
+    box-shadow: 0 0 24px rgba(0, 255, 136, 0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .glass:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 32px rgba(0, 255, 136, 0.25);
+  }
+  .pricing-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #00ff88;
+    text-shadow: 0 0 8px #00ff88, 0 0 16px #00ffaa;
+  }
+  .price {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #00ffaa;
+  }
+  .btn-accent {
+    background: #00ff88;
+    color: #000;
+    font-weight: 800;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #00ffaa;
+  }
+  .btn-accent:hover {
+    background: #33ff99;
+  }
+  .btn-outline-accent {
+    border: 2px solid #00ff88;
+    color: #00ff88;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+  .btn-outline-accent:hover {
+    background: #001f1a;
+  }
+  .badge-popular {
+    background: #00ffaa;
+    color: #001f1a;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    box-shadow: 0 0 8px #00ff88;
+  }
+  .fake-checkout {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #77ffcc;
+  }
+  .fake-checkout i {
+    color: #00ffaa;
+  }
+</style>
+{% endblock head_extra %}
+
+{% block content %}
+<section class="container py-5">
+  <h1 class="text-center pricing-title mb-5" data-aos="fade-up">Choose Your Plan</h1>
+
+  <div class="row g-4 justify-content-center">
+
+    <!-- Free Plan -->
+    <div class="col-md-4" data-aos="flip-left">
+      <div class="glass text-center h-100">
+        <h4 class="mb-3">Free</h4>
+        <p class="price">$0</p>
+        <ul class="list-unstyled small mb-4">
+          <li>✔ Up to <strong>5 sync jobs / month</strong></li>
+          <li>✔ Basic email support</li>
+          <li>✔ Access to desktop dashboard</li>
+        </ul>
+        <a href="{% url 'account_signup' %}" class="btn btn-outline-accent w-100">Start for Free</a>
+      </div>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="col-md-4" data-aos="flip-right" data-aos-delay="150">
+      <div class="glass text-center h-100 position-relative">
+        <div class="position-absolute top-0 start-50 translate-middle badge-popular">Popular</div>
+        <h4 class="mb-3 mt-2">Pro</h4>
+        <p class="price">$9<span class="fs-5">/mo</span></p>
+        <ul class="list-unstyled small mb-4">
+          <li>✔ Unlimited syncs</li>
+          <li>✔ Priority support (24h)</li>
+          <li>✔ API token &amp; webhooks</li>
+        </ul>
+        <a href="#" class="btn btn-accent w-100" onclick="alert(' This is a demo – payments coming soon.')">
+          Simulate Checkout
+        </a>
+        <div class="fake-checkout mt-3">
+          <i class="fas fa-lock"></i> Secure checkout powered by <strong>Stripe</strong> or <strong>PayPal</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock content %}

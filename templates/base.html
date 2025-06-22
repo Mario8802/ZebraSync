@@ -1,0 +1,205 @@
+{% load static %}
+<!-- =============================================
+  base.html – ZebraSync • Matrix Terminal Edition 4.0
+  Extreme neon-green design, glitch glow, brutalist layout,
+  retro matrix vibes, and terminal-grade style.
+============================================= -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}ZebraSync{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts & Libs -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <!-- Brutalist Terminal Styles -->
+  <style>
+    :root {
+      --accent: #00ff00;
+      --accent-light: #33ff66;
+      --surface: #000000;
+      --surface-muted: #0f0f0f;
+      --text-main: #00ff00;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background: radial-gradient(ellipse at top, #001100 0%, #000000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    #particles-js {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .glass, .panel {
+      background: rgba(0, 0, 0, 0.9);
+      border: 2px solid #00ff00;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      box-shadow: 0 0 15px #00ff00, 0 0 25px #003300 inset;
+      font-weight: bold;
+    }
+
+    .glass:hover, .panel:hover {
+      box-shadow: 0 0 25px #33ff66, 0 0 40px #003300 inset;
+      transform: scale(1.01);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #000;
+      font-weight: 800;
+      border: none;
+      border-radius: 6px;
+      padding: 0.6rem 1.4rem;
+      box-shadow: 0 0 10px var(--accent-light);
+      text-shadow: 0 0 5px #003300;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn-accent:hover {
+      background: #00cc00;
+      box-shadow: 0 0 15px #33ff66;
+    }
+    .btn-outline-accent {
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+      border-radius: 6px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .btn-outline-accent:hover {
+      background: #001100;
+      color: #33ff66;
+    }
+
+    .navbar {
+      background: #000!important;
+      border-bottom: 1px solid #00ff00;
+    }
+    .navbar-brand {
+      color: #00ff00;
+      font-weight: 900;
+      text-shadow: 0 0 6px #00ff00;
+    }
+    .nav-link {
+      color: var(--text-main) !important;
+    }
+    .nav-link:hover, .nav-link:focus {
+      color: #33ff66 !important;
+      text-shadow: 0 0 4px #33ff66;
+    }
+
+    .neon-title {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #00ff00;
+      text-shadow: 0 0 8px #00ff00, 0 0 12px #003300;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .counter {
+      font-size: 2.6rem;
+      color: var(--accent);
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 2rem 0 1rem;
+      font-size: .9rem;
+      color: #00ff00;
+      text-align: center;
+      background: #000;
+      border-top: 1px solid #00ff00;
+    }
+
+    .toggle-dark {
+      cursor: pointer;
+      color: #00ff00;
+    }
+  </style>
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+<div id="particles-js"></div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="/">ZebraSync</a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3">
+        <li class="nav-item"><a class="nav-link" href="{% url 'features' %}">Features</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'pricing' %}">Pricing</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'support' %}">Support</a></li>
+        <li class="nav-item d-flex align-items-center">
+          <i class="bi bi-terminal-fill ms-2 toggle-dark" id="themeToggle" title="Toggle light mode"></i>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-bs-toggle="dropdown"><i class="bi bi-person-circle me-1"></i>{{ user.first_name|default:user.username }}</a>
+          <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="userMenu">
+            <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="bi bi-hdd-network me-2"></i>Control Panel</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item"><a class="btn btn-outline-accent" href="{% url 'account_signup' %}">Register</a></li>
+        <li class="nav-item"><a class="btn btn-accent ms-lg-2" href="{% url 'account_login' %}">Access</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer>© 2025 ZebraSync • All rights reserved.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>AOS.init({ once: true, duration: 700, easing: 'ease-out' });</script>
+<script>particlesJS.load('particles-js', '{% static "particles/particles.json" %}');</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.counter').forEach(el => {
+      const target = +el.dataset.count;
+      let current = 0;
+      const step = Math.ceil(target / 60);
+      const update = () => {
+        current = Math.min(current + step, target);
+        el.textContent = current;
+        if (current < target) requestAnimationFrame(update);
+      };
+      update();
+    });
+  });
+  document.getElementById('themeToggle')?.addEventListener('click', () => {
+    const root = document.documentElement;
+    root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

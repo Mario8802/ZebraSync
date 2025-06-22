@@ -1,0 +1,80 @@
+  {% extends "base.html" %}
+  {% block title %}Dashboard – ZebraSync{% endblock %}
+
+  {% block content %}
+  <h2 class="neon-title mb-5" data-aos="fade-down"> Control Panel</h2>
+
+<!-- Upload Panel -->
+<div class="panel mx-auto" style="max-width: 640px;" data-aos="zoom-in">
+  <form method="post" enctype="multipart/form-data" action="{% url 'upload_zip' %}" class="text-center">
+    {% csrf_token %}
+    <label class="form-label fw-semibold mb-3">Upload ZIP to Synchronize</label>
+
+    <!-- Custom file input -->
+    <div class="mb-3">
+      <input type="file" name="src_zip" accept=".zip" required id="id_src_zip" class="d-none" />
+      <label for="id_src_zip" class="btn btn-outline-accent">Choose ZIP File</label>
+      <span id="file-name" class="text-accent ms-2">No file chosen</span>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-accent btn-sync mt-3">
+       Sync Now
+    </button>
+  </form>
+</div>
+
+<!-- Script to show chosen file name -->
+<script>
+  const input = document.getElementById("id_src_zip");
+  const fileName = document.getElementById("file-name");
+
+  input.addEventListener("change", () => {
+    fileName.textContent = input.files.length > 0 ? input.files[0].name : "No file chosen";
+  });
+</script>
+
+
+  <!-- History -->
+  <hr class="my-5 border-success">
+  <h4 class="text-center mb-4 neon-title" data-aos="fade-up"> Recent Synchronizations</h4>
+  <div class="table-responsive" data-aos="fade-up" data-aos-delay="150">
+    <table class="table table-dark table-bordered border-success table-hover align-middle text-accent">
+      <thead class="table-dark border-bottom border-success">
+        <tr class="text-accent">
+          <th scope="col">#</th>
+          <th scope="col">Timestamp</th>
+          <th scope="col">Status</th>
+          <th scope="col">Logs</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for job in sync_jobs %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ job.created_at|date:"Y-m-d H:i" }}</td>
+          <td>
+            {% if job.status == "success" %}
+              <span class="badge bg-success"> Success</span>
+            {% elif job.status == "failed" %}
+              <span class="badge bg-danger"> Failed</span>
+            {% else %}
+              <span class="badge bg-secondary"> {{ job.status|title }}</span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'job_detail' job.id %}" class="btn btn-sm btn-outline-accent">
+              View
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="text-center text-muted">No sync jobs yet.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endblock %}

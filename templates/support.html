@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Support – ZebraSync{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+  body {
+    background: linear-gradient(145deg, #0f0f0f, #000000);
+    font-family: "Fira Code", monospace;
+    color: #00ff88;
+  }
+  .glass {
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(0, 255, 136, 0.15);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0 24px rgba(0, 255, 136, 0.2);
+  }
+  .neon-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00ff88;
+    text-shadow: 0 0 8px #00ff88, 0 0 14px #00ffaa;
+  }
+  a {
+    color: #00ff88;
+    font-weight: 500;
+  }
+  a:hover {
+    color: #24ffb3;
+  }
+  code {
+    background: #111;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #00ffaa;
+    font-family: monospace;
+  }
+  .icon {
+    color: #00ffaa;
+    margin-right: 0.5rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+  <h1 class="text-center neon-title mb-5" data-aos="fade-up">Need Help?</h1>
+
+  <div class="row g-4">
+    <!-- FAQ Panel -->
+    <div class="col-lg-6" data-aos="fade-right">
+      <div class="glass shadow">
+        <h5 class="mb-3">
+          <i class="fas fa-question-circle icon"></i> Frequently Asked
+        </h5>
+        <ul class="small ps-3">
+          <li class="mb-3">
+            <strong>How do I start a sync?</strong><br>
+            Go to Dashboard → Upload ZIP → click ⟳ Sync.
+          </li>
+          <li class="mb-3">
+            <strong>Where are logs stored?</strong><br>
+            All logs are under <code>~/zebrasync/logs</code> and accessible in the UI.
+          </li>
+          <li>
+            <strong>How to cancel my Pro plan?</strong><br>
+            Email <a href="mailto:billing@zebrasync.dev">billing@zebrasync.dev</a>.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Contact Panel -->
+    <div class="col-lg-6" data-aos="fade-left">
+      <div class="glass shadow">
+        <h5 class="mb-3">
+          <i class="fas fa-envelope icon"></i> Contact Us
+        </h5>
+        <p class="small mb-2">
+          <strong>Email:</strong> <a href="mailto:support@zebrasync.dev">support@zebrasync.dev</a>
+        </p>
+        <p class="small mb-0">
+          <strong>Hours:</strong> Monday – Friday • 09:00 – 17:00 UTC
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,8 @@
+Django>=5.2
+django-allauth
+python-decouple
+celery
+redis
+django-channels
+psycopg2-binary
+celery

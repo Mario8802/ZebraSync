@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}Sign in via Google – ZebraSync{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  body {
+    background: linear-gradient(145deg, #0d0d0d, #000000);
+    font-family: "Fira Code", monospace;
+    color: #00ff88;
+  }
+  .glass {
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(0, 255, 136, 0.15);
+    backdrop-filter: blur(16px);
+    border-radius: 1.25rem;
+    color: #00ff88;
+    box-shadow: 0 0 24px rgba(0, 255, 136, 0.2);
+  }
+  .neon-title {
+    font-size: 1.9rem;
+    font-weight: bold;
+    color: #00ff88;
+    text-shadow: 0 0 8px #00ff88, 0 0 16px #00ffaa;
+  }
+  .btn-neon {
+    background-color: #00ff88;
+    color: black;
+    font-weight: 700;
+    box-shadow: 0 0 12px #00ffaa;
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+  }
+  .btn-neon:hover {
+    background-color: #33ff99;
+    box-shadow: 0 0 16px #00ffaa;
+  }
+  a.small.text-muted {
+    color: #77ffcc !important;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="d-flex justify-content-center align-items-center" style="min-height:100vh;">
+  <div class="glass p-5 shadow-lg" style="max-width:480px;width:100%;" data-aos="zoom-in">
+    <h2 class="neon-title text-center mb-4"> Continue with Google</h2>
+    <p class="text-center mb-4">
+      You are about to sign in using your Google account.
+    </p>
+    <form method="post" action="">
+      {% csrf_token %}
+      <div class="text-center">
+        <button type="submit" class="btn btn-neon px-4 py-2">
+          ✅ Continue
+        </button>
+      </div>
+    </form>
+    <div class="text-center mt-4">
+      <a href="{% url 'account_login' %}" class="small text-muted">Back to login</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

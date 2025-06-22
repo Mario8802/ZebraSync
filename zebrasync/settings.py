@@ -23,11 +23,10 @@ load_dotenv(BASE_DIR / ".env")
 # =============================================================================
 SECRET_KEY = os.getenv("SECRET_KEY", "!!!change-me-in-prod!!!")
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "yes")
-ALLOWED_HOSTS = (
-    os.getenv("ALLOWED_HOSTS", "localhost 127.0.0.1 [::1]").split()
-    if not DEBUG
-    else ["*"]
-)
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split()
 
 # =============================================================================
 # Application Definition

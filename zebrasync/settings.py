@@ -6,6 +6,7 @@ secrets or environment-specific settings in VCS.
 
 Generated with Django 5.2.3 and customised for django-allauth + Google OAuth.
 """
+import dj_database_url
 
 from pathlib import Path
 import os
@@ -90,13 +91,17 @@ TEMPLATES = [
 # =============================================================================
 # Database Configuration
 # =============================================================================
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.parse(
+        os.getenv("DATABASE_URL"), conn_max_age=600
+    )
 }
-
 # =============================================================================
 # Authentication & Allauth
 # =============================================================================

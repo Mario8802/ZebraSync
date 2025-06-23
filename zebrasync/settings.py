@@ -1,13 +1,8 @@
 """
 Django settings for zebrasync project (development edition).
-
-Loads sensitive values from a local .env file so you never hard-code
-secrets or environment-specific settings in VCS.
-
-Generated with Django 5.2.3 and customised for django-allauth + Google OAuth.
 """
-import dj_database_url
 
+import dj_database_url
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -23,10 +18,24 @@ load_dotenv(BASE_DIR / ".env")
 # =============================================================================
 SECRET_KEY = os.getenv("SECRET_KEY", "!!!change-me-in-prod!!!")
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "yes")
-if DEBUG:
-    ALLOWED_HOSTS = ["*"]
-else:
-    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split()
+
+RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "zebrasync.onrender.com",
+]
+
+if RENDER_HOST:
+    ALLOWED_HOSTS.append(RENDER_HOST)
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://zebrasync.onrender.com",
+]
+
+if RENDER_HOST:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_HOST}")
 
 # =============================================================================
 # Application Definition
@@ -65,7 +74,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "zebrasync.urls"
-
 WSGI_APPLICATION = "zebrasync.wsgi.application"
 
 # =============================================================================
@@ -79,7 +87,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
-                "django.template.context_processors.request",  # required by allauth
+                "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
@@ -90,17 +98,22 @@ TEMPLATES = [
 # =============================================================================
 # Database Configuration
 # =============================================================================
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-DATABASES = {
-    "default": dj_database_url.parse(
-        os.getenv("DATABASE_URL"), conn_max_age=600
-    )
-}
+if os.getenv("DEBUG", "False").lower() in ("true", "1", "yes"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+else:
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+
+
 # =============================================================================
 # Authentication & Allauth
 # =============================================================================
@@ -114,7 +127,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_EMAIL_VERIFICATION = "none"  # change to "mandatory" in production
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
@@ -138,7 +151,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # =============================================================================
-# Celery Configuration (Redis broker)
+# Celery Configuration
 # =============================================================================
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", CELERY_BROKER_URL)
@@ -156,7 +169,6 @@ USE_TZ = True
 # =============================================================================
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -171,4 +183,3 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-# Temporary change to force redeploy

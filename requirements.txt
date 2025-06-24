@@ -36,3 +36,4 @@ wcwidth==0.2.13
 gunicorn
 dj-database-url
 python-decouple
+whitenoise>=6.6

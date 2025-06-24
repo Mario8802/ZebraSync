@@ -12,4 +12,4 @@ class LogLine(models.Model):
     ts = models.DateTimeField(auto_now_add=True)
     level = models.CharField(max_length=8)
     message = models.TextField()
-#TEST 1
+#TEST 11

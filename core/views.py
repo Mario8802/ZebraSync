@@ -8,6 +8,23 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
+
+# core/views.py
+from django.http import JsonResponse
+from allauth.socialaccount.models import SocialApp
+from django.contrib.sites.models import Site
+
+def init_socialapp(request):
+    try:
+        app = SocialApp.objects.filter(provider="google").first()
+        site = Site.objects.get_current()
+        if app:
+            app.sites.add(site)
+            return JsonResponse({"status": "linked", "site": site.domain})
+        return JsonResponse({"error": "SocialApp not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
 def debug_socialapp(request):
     try:
         app = SocialApp.objects.filter(provider="google").first()

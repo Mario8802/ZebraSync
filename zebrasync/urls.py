@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from core.views import init_socialapp
+from core.views import debug_socialapp
 urlpatterns = [
     # ─── Admin ────────────────────────────────────────────────
     path("admin/", admin.site.urls),
@@ -14,7 +15,8 @@ urlpatterns = [
     # ─── App routes ───────────────────────────────────────────
     # home, features, pricing, support, dashboard, uploads, …
     path("", include("core.urls")),
-path("debug/socialapp/", debug_socialapp),
+    path("debug/socialapp/", debug_socialapp),
+path("debug/socialapp/init/", init_socialapp),
 ]
 
 # ─── Static / Media in DEBUG (удобно при разработка) ─────────

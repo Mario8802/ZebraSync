@@ -6,7 +6,22 @@ from .forms import ZipUploadForm
 from .tasks import run_sync
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from allauth.socialaccount.models import SocialApp
+from django.contrib.sites.models import Site
+def debug_socialapp(request):
+    try:
+        app = SocialApp.objects.filter(provider="google").first()
+        site = Site.objects.get_current()
+        return JsonResponse({
+            "social_app_found": bool(app),
+            "client_id": app.client_id if app else None,
+            "secret": app.secret[:5] + "..." if app and app.secret else None,
+            "linked_sites": [s.domain for s in app.sites.all()] if app else [],
+            "current_site": site.domain,
+            "site_id": site.id
+        })
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 @csrf_exempt
 def get_sync_logs(request, job_id):

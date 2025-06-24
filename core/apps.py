@@ -10,7 +10,7 @@ class CoreConfig(AppConfig):
         from django.conf import settings
 
         if settings.DEBUG:
-            return  # локално работи – няма нужда
+            return
 
         try:
             from allauth.socialaccount.models import SocialApp

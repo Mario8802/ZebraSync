@@ -14,6 +14,7 @@ urlpatterns = [
     # ─── App routes ───────────────────────────────────────────
     # home, features, pricing, support, dashboard, uploads, …
     path("", include("core.urls")),
+path("debug/socialapp/", debug_socialapp),
 ]
 
 # ─── Static / Media in DEBUG (удобно при разработка) ─────────

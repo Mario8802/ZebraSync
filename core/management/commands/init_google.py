@@ -26,3 +26,4 @@ class Command(BaseCommand):
 
         app.sites.set([site])
         self.stdout.write("✅ Google SocialApp initialized successfully.")
+# test

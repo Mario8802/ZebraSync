@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load account socialaccount %}
 
-{% block title %}Register – ZebraSync{% endblock %}
+{% block title %}Login – ZebraSync{% endblock %}
 
 {% block head_extra %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -59,14 +59,6 @@
   .btn-google:hover {
     background: #002a1e;
   }
-  .password-toggle {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #00ffaa;
-  }
 </style>
 {% endblock %}
 
@@ -74,23 +66,20 @@
 <section class="d-flex justify-content-center align-items-center" style="min-height:100vh;">
   <div class="glass p-5 shadow-lg" style="max-width:480px;width:100%;" data-aos="fade-up">
 
-    <h2 class="neon-title text-center mb-4">Create Your ZebraSync Account</h2>
+    <h2 class="neon-title text-center mb-4">Welcome Back to ZebraSync</h2>
 
-    <form method="post" action="{% url 'account_signup' %}">
+    <form method="post" action="{% url 'account_login' %}">
       {% csrf_token %}
       {% for field in form %}
-        <div class="form-group position-relative mb-3">
+        <div class="form-group mb-3">
           {{ field.label_tag }}
           {{ field }}
-          {% if field.name|lower == "password1" or field.name|lower == "password2" %}
-            <i class="fa-solid fa-eye password-toggle"></i>
-          {% endif %}
           {% if field.errors %}
             <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
           {% endif %}
         </div>
       {% endfor %}
-      <button type="submit" class="btn btn-neon w-100 mt-2">Register</button>
+      <button type="submit" class="btn btn-neon w-100 mt-2">Login</button>
     </form>
 
     <hr class="my-4"/>
@@ -98,7 +87,7 @@
     <div class="text-center mb-3">
       {% if 'google' in socialaccount.providers %}
         <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100">
-          <i class="fab fa-google me-2"></i>Sign up with Google
+          <i class="fab fa-google me-2"></i>Log in with Google
         </a>
       {% else %}
         <div class="alert alert-warning">Google login is currently not available.</div>
@@ -106,26 +95,10 @@
     </div>
 
     <p class="text-center small mt-3">
-      Already have an account?
-      <a href="{% url 'account_login' %}" class="fw-bold" style="color:#00ffaa;">Log in</a>
+      Don't have an account?
+      <a href="{% url 'account_signup' %}" class="fw-bold" style="color:#00ffaa;">Register</a>
     </p>
 
   </div>
 </section>
-
-<script>
-  document.querySelectorAll('.form-group input').forEach(el => {
-    el.addEventListener('focus', e => e.target.parentElement.classList.add('focused'));
-    el.addEventListener('blur', e => e.target.parentElement.classList.remove('focused'));
-  });
-
-  document.querySelectorAll('.password-toggle').forEach(icon => {
-    icon.addEventListener('click', () => {
-      const pwdInput = icon.previousElementSibling;
-      if (!pwdInput) return;
-      pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
-      icon.classList.toggle('fa-eye-slash');
-    });
-  });
-</script>
 {% endblock %}

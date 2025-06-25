@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load account socialaccount %}
 
-{% block title %}Login – ZebraSync{% endblock %}
+{% block title %}Register – ZebraSync{% endblock %}
 
 {% block head_extra %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -37,9 +37,7 @@
   .form-group.focused input {
     border-color: #00ffaa;
   }
-  label {
-    margin-bottom: .25rem;
-  }
+  label { margin-bottom: .25rem; }
   .btn-neon {
     background: #00ff88;
     color: #000;
@@ -74,16 +72,17 @@
 
 {% block content %}
 <section class="d-flex justify-content-center align-items-center" style="min-height:100vh;">
-  <div class="glass p-5 shadow-lg" style="max-width:460px;width:100%;" data-aos="fade-up">
-    <h2 class="neon-title text-center mb-4"> Sign in to ZebraSync</h2>
+  <div class="glass p-5 shadow-lg" style="max-width:480px;width:100%;" data-aos="fade-up">
 
-    <form method="post" action="{% url 'account_login' %}">
+    <h2 class="neon-title text-center mb-4">Create Your ZebraSync Account</h2>
+
+    <form method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}
       {% for field in form %}
         <div class="form-group position-relative mb-3">
           {{ field.label_tag }}
           {{ field }}
-          {% if field.name == "password" %}
+          {% if field.name|lower == "password1" or field.name|lower == "password2" %}
             <i class="fa-solid fa-eye password-toggle"></i>
           {% endif %}
           {% if field.errors %}
@@ -91,27 +90,26 @@
           {% endif %}
         </div>
       {% endfor %}
-      <button type="submit" class="btn btn-neon w-100 mt-2"> Login</button>
+      <button type="submit" class="btn btn-neon w-100 mt-2">Register</button>
     </form>
 
-    <div class="text-end mt-3">
-      <a href="{% url 'account_reset_password' %}" class="small text-decoration-none" style="color:#77ffcc;">
-        Forgot password?
-      </a>
-    </div>
-
-    <hr class="my-4" />
+    <hr class="my-4"/>
 
     <div class="text-center mb-3">
-      <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100">
-        <i class="fab fa-google me-2"></i> Continue with Google
-      </a>
+      {% if 'google' in socialaccount.providers %}
+        <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100">
+          <i class="fab fa-google me-2"></i>Sign up with Google
+        </a>
+      {% else %}
+        <div class="alert alert-warning">Google login is currently not available.</div>
+      {% endif %}
     </div>
 
     <p class="text-center small mt-3">
-      No account yet?
-      <a href="{% url 'account_signup' %}" class="fw-bold" style="color:#00ffaa;">Register here</a>
+      Already have an account?
+      <a href="{% url 'account_login' %}" class="fw-bold" style="color:#00ffaa;">Log in</a>
     </p>
+
   </div>
 </section>
 
@@ -120,14 +118,14 @@
     el.addEventListener('focus', e => e.target.parentElement.classList.add('focused'));
     el.addEventListener('blur', e => e.target.parentElement.classList.remove('focused'));
   });
-  const toggle = document.querySelector('.password-toggle');
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      const pwd = document.querySelector('input[type="password"]');
-      if (!pwd) return;
-      pwd.type = pwd.type === 'password' ? 'text' : 'password';
-      toggle.classList.toggle('fa-eye-slash');
+
+  document.querySelectorAll('.password-toggle').forEach(icon => {
+    icon.addEventListener('click', () => {
+      const pwdInput = icon.previousElementSibling;
+      if (!pwdInput) return;
+      pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
+      icon.classList.toggle('fa-eye-slash');
     });
-  }
+  });
 </script>
 {% endblock %}

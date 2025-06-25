@@ -1,158 +1,88 @@
-<!--{% extends "base.html" %}-->
-<!--{% load i18n %}-->
-<!--{% load account socialaccount %}-->
-
-<!--{% block title %}Register – ZebraSync{% endblock %}-->
-
-<!--{% block head_extra %}-->
-<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />-->
-<!--<style>-->
-<!--  body {-->
-<!--    background: linear-gradient(145deg, #0d0d0d, #000000);-->
-<!--    font-family: "Fira Code", monospace;-->
-<!--    color: #00ff88;-->
-<!--  }-->
-<!--  .glass {-->
-<!--    background: rgba(0, 0, 0, 0.88);-->
-<!--    backdrop-filter: blur(16px);-->
-<!--    border: 1px solid rgba(0, 255, 136, 0.15);-->
-<!--    border-radius: 1.25rem;-->
-<!--    color: #00ff88;-->
-<!--    box-shadow: 0 0 24px rgba(0, 255, 136, 0.2);-->
-<!--  }-->
-<!--  .neon-title {-->
-<!--    font-size: 1.9rem;-->
-<!--    font-weight: bold;-->
-<!--    color: #00ff88;-->
-<!--    text-shadow: 0 0 8px #00ff88, 0 0 16px #00ffaa;-->
-<!--  }-->
-<!--  input[type=text], input[type=password], input[type=email] {-->
-<!--    background: #000;-->
-<!--    border: 2px solid #00ff88;-->
-<!--    border-radius: 8px;-->
-<!--    padding: 10px 12px;-->
-<!--    width: 100%;-->
-<!--    color: #00ff88;-->
-<!--  }-->
-<!--  .form-group.focused input {-->
-<!--    border-color: #00ffaa;-->
-<!--  }-->
-<!--  label { margin-bottom: .25rem; }-->
-<!--  .btn-neon {-->
-<!--    background: #00ff88;-->
-<!--    color: #000;-->
-<!--    font-weight: 700;-->
-<!--    box-shadow: 0 0 10px #00ffaa;-->
-<!--    transition: all .3s;-->
-<!--    border-radius: 8px;-->
-<!--  }-->
-<!--  .btn-neon:hover {-->
-<!--    background: #33ff99;-->
-<!--    box-shadow: 0 0 14px #00ffaa;-->
-<!--  }-->
-<!--  .btn-google {-->
-<!--    border: 2px solid #00ff88;-->
-<!--    color: #00ffaa;-->
-<!--    font-weight: 600;-->
-<!--    border-radius: 8px;-->
-<!--  }-->
-<!--  .btn-google:hover {-->
-<!--    background: #002a1e;-->
-<!--  }-->
-<!--  .password-toggle {-->
-<!--    position: absolute;-->
-<!--    right: 10px;-->
-<!--    top: 50%;-->
-<!--    transform: translateY(-50%);-->
-<!--    cursor: pointer;-->
-<!--    color: #00ffaa;-->
-<!--  }-->
-<!--</style>-->
-<!--{% endblock %}-->
-
-<!--{% block content %}-->
-<!--<section class="d-flex justify-content-center align-items-center" style="min-height:100vh;">-->
-<!--  <div class="glass p-5 shadow-lg" style="max-width:480px;width:100%;" data-aos="fade-up">-->
-
-<!--    <h2 class="neon-title text-center mb-4"> Create Your ZebraSync Account</h2>-->
-
-<!--    <form method="post" action="{% url 'account_signup' %}">-->
-<!--      {% csrf_token %}-->
-<!--      {% for field in form %}-->
-<!--        <div class="form-group position-relative mb-3">-->
-<!--          {{ field.label_tag }}-->
-<!--          {{ field }}-->
-<!--          {% if field.name|lower == "password1" or field.name|lower == "password2" %}-->
-<!--            <i class="fa-solid fa-eye password-toggle"></i>-->
-<!--          {% endif %}-->
-<!--          {% if field.errors %}-->
-<!--            <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>-->
-<!--          {% endif %}-->
-<!--        </div>-->
-<!--      {% endfor %}-->
-<!--      <button type="submit" class="btn btn-neon w-100 mt-2"> Register</button>-->
-<!--    </form>-->
-
-<!--    <hr class="my-4"/>-->
-
-<!--    <div class="text-center mb-3">-->
-<!--      {% if 'google' in socialaccount.providers %}-->
-<!--  <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100">-->
-<!--    <i class="fab fa-google me-2"></i> Sign up with Google-->
-<!--  </a>-->
-<!--{% else %}-->
-<!--  <div class="alert alert-warning">Google login is currently not available.</div>-->
-<!--{% endif %}-->
-<!--        <i class="fab fa-google me-2"></i> Sign up with Google-->
-<!--      </a>-->
-<!--    </div>-->
-
-<!--    <p class="text-center small mt-3">-->
-<!--      Already have an account?-->
-<!--      <a href="{% url 'account_login' %}" class="fw-bold" style="color:#00ffaa;">Log in</a>-->
-<!--    </p>-->
-
-<!--  </div>-->
-<!--</section>-->
-
-<!--<script>-->
-<!--  document.querySelectorAll('.form-group input').forEach(el => {-->
-<!--    el.addEventListener('focus', e => e.target.parentElement.classList.add('focused'));-->
-<!--    el.addEventListener('blur', e => e.target.parentElement.classList.remove('focused'));-->
-<!--  });-->
-
-<!--  document.querySelectorAll('.password-toggle').forEach(icon => {-->
-<!--    icon.addEventListener('click', () => {-->
-<!--      const pwdInput = icon.previousElementSibling;-->
-<!--      if (!pwdInput) return;-->
-<!--      pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';-->
-<!--      icon.classList.toggle('fa-eye-slash');-->
-<!--    });-->
-<!--  });-->
-<!--</script>-->
-<!--{% endblock %}-->
 {% extends "base.html" %}
-{% load i18n account socialaccount %}
+{% load i18n %}
+{% load account socialaccount %}
 
 {% block title %}Register – ZebraSync{% endblock %}
 
 {% block head_extra %}
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<style>/* … цялото ти CSS … */</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+  body {
+    background: linear-gradient(145deg, #0d0d0d, #000000);
+    font-family: "Fira Code", monospace;
+    color: #00ff88;
+  }
+  .glass {
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 255, 136, 0.15);
+    border-radius: 1.25rem;
+    color: #00ff88;
+    box-shadow: 0 0 24px rgba(0, 255, 136, 0.2);
+  }
+  .neon-title {
+    font-size: 1.9rem;
+    font-weight: bold;
+    color: #00ff88;
+    text-shadow: 0 0 8px #00ff88, 0 0 16px #00ffaa;
+  }
+  input[type=text], input[type=password], input[type=email] {
+    background: #000;
+    border: 2px solid #00ff88;
+    border-radius: 8px;
+    padding: 10px 12px;
+    width: 100%;
+    color: #00ff88;
+  }
+  .form-group.focused input {
+    border-color: #00ffaa;
+  }
+  label { margin-bottom: .25rem; }
+  .btn-neon {
+    background: #00ff88;
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0 10px #00ffaa;
+    transition: all .3s;
+    border-radius: 8px;
+  }
+  .btn-neon:hover {
+    background: #33ff99;
+    box-shadow: 0 0 14px #00ffaa;
+  }
+  .btn-google {
+    border: 2px solid #00ff88;
+    color: #00ffaa;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+  .btn-google:hover {
+    background: #002a1e;
+  }
+  .password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #00ffaa;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
 <section class="d-flex justify-content-center align-items-center" style="min-height:100vh;">
   <div class="glass p-5 shadow-lg" style="max-width:480px;width:100%;" data-aos="fade-up">
-    <h2 class="neon-title text-center mb-4">Create Your ZebraSync Account</h2>
+
+    <h2 class="neon-title text-center mb-4"> Create Your ZebraSync Account</h2>
 
     <form method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}
       {% for field in form %}
         <div class="form-group position-relative mb-3">
-          {{ field.label_tag }}{{ field }}
-          {% if field.name|lower in ("password1", "password2") %}
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.name|lower == "password1" or field.name|lower == "password2" %}
             <i class="fa-solid fa-eye password-toggle"></i>
           {% endif %}
           {% if field.errors %}
@@ -165,22 +95,37 @@
 
     <hr class="my-4"/>
 
-    {% if site %}
-      <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100">
-        <i class="fab fa-google me-2"></i> Sign up with Google
-      </a>
-    {% else %}
-      <div class="alert alert-warning">Google login is not configured.</div>
-    {% endif %}
+    <div class="text-center mb-3">
+      {% if 'google' in socialaccount.providers %}
+        <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100">
+          <i class="fab fa-google me-2"></i> Sign up with Google
+        </a>
+      {% else %}
+        <div class="alert alert-warning">Google login is currently not available.</div>
+      {% endif %}
+    </div>
 
     <p class="text-center small mt-3">
-      {% trans "Already have an account?" %}
+      Already have an account?
       <a href="{% url 'account_login' %}" class="fw-bold" style="color:#00ffaa;">Log in</a>
     </p>
+
   </div>
 </section>
 
 <script>
-  /* твоя JS – остава същия */
+  document.querySelectorAll('.form-group input').forEach(el => {
+    el.addEventListener('focus', e => e.target.parentElement.classList.add('focused'));
+    el.addEventListener('blur', e => e.target.parentElement.classList.remove('focused'));
+  });
+
+  document.querySelectorAll('.password-toggle').forEach(icon => {
+    icon.addEventListener('click', () => {
+      const pwdInput = icon.previousElementSibling;
+      if (!pwdInput) return;
+      pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
+      icon.classList.toggle('fa-eye-slash');
+    });
+  });
 </script>
 {% endblock %}

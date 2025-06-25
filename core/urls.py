@@ -13,5 +13,6 @@ urlpatterns = [
     path("upload/", views.upload_zip, name="upload_zip"),
     path("jobs/<int:job_id>/", views.job_detail, name="job_detail"),
     path("api/logs/<int:job_id>/", views.get_sync_logs, name="get_sync_logs"),
+
 ]
 # test

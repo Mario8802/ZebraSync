@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import SyncJob, LogLine
 from .forms import ZipUploadForm
 from .tasks import run_sync
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
@@ -14,16 +14,24 @@ from django.http import JsonResponse
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
 
+# core/views.py (или custom команда)
+from allauth.socialaccount.models import SocialApp
+from django.contrib.sites.models import Site
+from django.conf import settings
+
 def init_socialapp(request):
-    try:
-        app = SocialApp.objects.filter(provider="google").first()
-        site = Site.objects.get_current()
-        if app:
-            app.sites.add(site)
-            return JsonResponse({"status": "linked", "site": site.domain})
-        return JsonResponse({"error": "SocialApp not found"}, status=404)
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+    site = Site.objects.get_current()
+
+    if not SocialApp.objects.filter(provider="google").exists():
+        app = SocialApp.objects.create(
+            provider="google",
+            name="Google",
+            client_id=settings.SOCIALACCOUNT_GOOGLE_CLIENT_ID,
+            secret=settings.SOCIALACCOUNT_GOOGLE_SECRET,
+        )
+        app.sites.add(site)
+        return HttpResponse("✅ Google SocialApp created.")
+    return HttpResponse("ℹ️ SocialApp already exists.")
 
 def debug_socialapp(request):
     try:

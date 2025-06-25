@@ -124,6 +124,11 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
+        "APP": {
+            "client_id": os.getenv("SOCIALACCOUNT_GOOGLE_CLIENT_ID"),
+            "secret": os.getenv("SOCIALACCOUNT_GOOGLE_SECRET"),
+            "key": "",
+        },
         "SCOPE": ["profile", "email"],
         "AUTH_PARAMS": {"access_type": "online"},
     }

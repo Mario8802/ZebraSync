@@ -84,11 +84,15 @@
 
     <hr class="my-4"/>
 
-<div class="text-center mb-3">
-  <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100">
-    <i class="fab fa-google me-2"></i> Log in with Google
-  </a>
-</div>
+    <div class="text-center mb-3">
+      {% if 'google' in socialaccount.providers %}
+        <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100">
+          <i class="fab fa-google me-2"></i>Log in with Google
+        </a>
+      {% else %}
+        <div class="alert alert-warning">Google login is currently not available.</div>
+      {% endif %}
+    </div>
 
     <p class="text-center small mt-3">
       Don't have an account?

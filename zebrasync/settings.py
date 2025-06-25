@@ -99,21 +99,12 @@ TEMPLATES = [
 # =============================================================================
 # Database Configuration
 # =============================================================================
-if os.getenv("DEBUG", "False").lower() in ("true", "1", "yes"):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
-else:
-    DATABASES = {
-        "default": dj_database_url.config(
-            conn_max_age=600,
-            ssl_require=True
-        )
-    }
-
+DATABASES = {
+    "default": dj_database_url.config(
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
 # =============================================================================
 # Authentication & Allauth
@@ -199,3 +190,5 @@ LOGGING = {
     },
 }
 # Trigger GitHub Actions deployment
+
+print(DATABASES)

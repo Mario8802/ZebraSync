@@ -85,13 +85,16 @@
     <hr class="my-4"/>
 
     <div class="text-center mb-3">
-      {% if 'google' in socialaccount.providers %}
-        <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100">
-          <i class="fab fa-google me-2"></i>Log in with Google
-        </a>
-      {% else %}
-        <div class="alert alert-warning">Google login is currently not available.</div>
-      {% endif %}
+     {% if socialaccount_providers %}
+  {% for provider in socialaccount_providers.values %}
+    <a href="{% provider_login_url provider.id %}" class="btn btn-google w-100">
+      <i class="fab fa-{{ provider.id }} me-2"></i>Log in with {{ provider.name }}
+    </a>
+  {% endfor %}
+{% else %}
+  <div class="alert alert-warning">Login via social provider is not available.</div>
+{% endif %}
+
     </div>
 
     <p class="text-center small mt-3">
@@ -100,5 +103,13 @@
     </p>
 
   </div>
+  <div class="text-danger">
+  {% for key, val in socialaccount_providers.items %}
+    Provider: {{ key }} – {{ val }}
+  {% empty %}
+    No providers loaded.
+  {% endfor %}
+</div>
+
 </section>
 {% endblock %}

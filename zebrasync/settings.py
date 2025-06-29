@@ -33,10 +33,6 @@ if RENDER_HOST:
 CSRF_TRUSTED_ORIGINS = [
     "https://zebrasync.onrender.com",
 ]
-
-if RENDER_HOST:
-    CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_HOST}")
-
 # =============================================================================
 # Application Definition
 # =============================================================================
@@ -72,6 +68,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+
 ]
 
 ROOT_URLCONF = "zebrasync.urls"
@@ -91,6 +88,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",  # Required by allauth
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+
             ],
         },
     },
@@ -129,8 +127,12 @@ SOCIALACCOUNT_PROVIDERS = {
         },
         "SCOPE": ["profile", "email"],
         "AUTH_PARAMS": {"access_type": "online"},
+        "OAUTH_PKCE_ENABLED": True,
     }
 }
+
+
+
 
 # =============================================================================
 # Static & Media Files
@@ -179,3 +181,7 @@ LOGGING = {
         "level": "WARNING",
     },
 }
+print("✅ GOOGLE CLIENT ID =", os.getenv("SOCIALACCOUNT_GOOGLE_CLIENT_ID"))
+print("✅ GOOGLE SECRET =", os.getenv("SOCIALACCOUNT_GOOGLE_SECRET"))
+import pprint
+pprint.pprint(SOCIALACCOUNT_PROVIDERS)

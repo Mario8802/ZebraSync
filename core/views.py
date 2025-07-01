@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
 
-# core/views.py (или custom команда)
+
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
 from django.conf import settings

@@ -2,6 +2,10 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
+
+    path("debug-socialapp/", views.debug_socialapp, name="debug_socialapp"),
+    path("init-socialapp/", views.init_socialapp, name="init_socialapp"),
+
     # ─── PUBLIC ROUTES ─────────────────────────
     path("", views.home, name="home"),
     path("features/", views.features_view, name="features"),

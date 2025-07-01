@@ -22,13 +22,8 @@ DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "yes")
 RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 
 ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
     "zebrasync.onrender.com",
 ]
-
-if RENDER_HOST:
-    ALLOWED_HOSTS.append(RENDER_HOST)
 
 CSRF_TRUSTED_ORIGINS = [
     "https://zebrasync.onrender.com",

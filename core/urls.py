@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -14,5 +14,6 @@ urlpatterns = [
     path("jobs/<int:job_id>/", views.job_detail, name="job_detail"),
     path("api/logs/<int:job_id>/", views.get_sync_logs, name="get_sync_logs"),
 
+    # ─── ALLAUTH ROUTES ────────────────────────
+    path("accounts/", include("allauth.urls")),
 ]
-# test

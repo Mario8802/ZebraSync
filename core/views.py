@@ -18,7 +18,20 @@ from django.contrib.sites.models import Site
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
 from django.conf import settings
+from django.contrib.sites.models import Site
+from django.http import HttpResponse
 
+def init_site(request):
+    site, created = Site.objects.get_or_create(
+        id=1,
+        defaults={"domain": "zebrasync.onrender.com", "name": "ZebraSync"}
+    )
+    if not created:
+        site.domain = "zebrasync.onrender.com"
+        site.name = "ZebraSync"
+        site.save()
+        return HttpResponse("✅ Site updated.")
+    return HttpResponse("✅ Site created.")
 def init_socialapp(request):
     site = Site.objects.get_current()
 

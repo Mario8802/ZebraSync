@@ -1,0 +1,4 @@
+2025-06-22 21:49:33,610 | INFO | Job #32 started for ZIP: uploads/test_lqcleoc.zip
+2025-06-22 21:49:33,635 | INFO | Copied/Updated: test\test1.txt
+2025-06-22 21:49:33,645 | INFO | Copied/Updated: test\test2.txt
+2025-06-22 21:49:33,653 | INFO | Sync completed.

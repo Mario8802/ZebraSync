@@ -181,7 +181,4 @@ LOGGING = {
         "level": "WARNING",
     },
 }
-print("✅ GOOGLE CLIENT ID =", os.getenv("SOCIALACCOUNT_GOOGLE_CLIENT_ID"))
-print("✅ GOOGLE SECRET =", os.getenv("SOCIALACCOUNT_GOOGLE_SECRET"))
-import pprint
-pprint.pprint(SOCIALACCOUNT_PROVIDERS)
+

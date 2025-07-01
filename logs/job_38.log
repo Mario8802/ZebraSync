@@ -1,0 +1,11 @@
+2025-06-22 21:56:07,186 | INFO | Job #38 started for ZIP: uploads/53D07AED-1753-4DD5-BA71-7841F855B58F_L0_001.jpg
+2025-06-22 21:56:07,209 | ERROR | Sync failed: File is not a zip file
+Traceback (most recent call last):
+  File "C:\Users\Asus\Projects\zebrasync\core\tasks.py", line 28, in run_sync
+    with zipfile.ZipFile(job.src_zip.path) as zf:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\zipfile.py", line 1302, in __init__
+    self._RealGetContents()
+  File "C:\Python311\Lib\zipfile.py", line 1369, in _RealGetContents
+    raise BadZipFile("File is not a zip file")
+zipfile.BadZipFile: File is not a zip file

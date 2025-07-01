@@ -1,18 +1,19 @@
-# Django
+# Python
 *.pyc
 __pycache__/
+
+# SQLite (ако ползваш локално)
 db.sqlite3
 
-# Media & static files
-/media/
-/staticfiles/
-
-# Environments
-.env
+# Virtual environments
 .venv/
+.env
 .env.*
 
-# VS Code / PyCharm
+# IDE config
 .vscode/
 .idea/
--e "\n# Static & media\nstaticfiles/\nmedia/" 
+
+# Static & media
+staticfiles/
+media/

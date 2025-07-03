@@ -17,7 +17,7 @@ load_dotenv(BASE_DIR / ".env")
 # Core Security Settings
 # =============================================================================
 SECRET_KEY = os.getenv("SECRET_KEY", "!!!change-me-in-prod!!!")
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "yes")
 
 RENDER_HOST = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 

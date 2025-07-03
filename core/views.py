@@ -1,25 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.contrib.sites.models import Site
 from .models import SyncJob, LogLine
 from .forms import ZipUploadForm
 from .tasks import run_sync
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from allauth.socialaccount.models import SocialApp
-from django.contrib.sites.models import Site
-
-# core/views.py
-from django.http import JsonResponse
-from allauth.socialaccount.models import SocialApp
-from django.contrib.sites.models import Site
-
-
-from allauth.socialaccount.models import SocialApp
-from django.contrib.sites.models import Site
-from django.conf import settings
-from django.contrib.sites.models import Site
-from django.http import HttpResponse
 
 def init_site(request):
     site, created = Site.objects.get_or_create(

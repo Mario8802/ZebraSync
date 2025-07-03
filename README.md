@@ -34,3 +34,4 @@ cd zebrasync
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+![image](https://github.com/user-attachments/assets/0802039a-8b19-404f-a6db-a1c4f23758ee)

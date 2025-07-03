@@ -9,7 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 
     # ─── Auth (django-allauth) ────────────────────────────────
-    # включва login, logout, signup, Google OAuth, …
+    # Includes login, logout, signup, Google OAuth, …
     path("accounts/", include("allauth.urls")),
 
     # ─── App routes ───────────────────────────────────────────
@@ -19,7 +19,7 @@ urlpatterns = [
 path("debug/socialapp/init/", init_socialapp),
 ]
 
-# ─── Static / Media in DEBUG (удобно при разработка) ─────────
+# ─── Static / Media in DEBUG ─────────
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

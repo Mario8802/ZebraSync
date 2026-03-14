@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
-# Create your models here.
+
+
 class SyncJob(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     src_zip = models.FileField(upload_to="uploads/")
@@ -12,4 +13,3 @@ class LogLine(models.Model):
     ts = models.DateTimeField(auto_now_add=True)
     level = models.CharField(max_length=8)
     message = models.TextField()
-#TEST 11

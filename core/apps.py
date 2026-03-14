@@ -31,4 +31,3 @@ class CoreConfig(AppConfig):
             pass
         except Exception as e:
             print("⚠️ Could not configure SocialApp:", str(e))
-# test

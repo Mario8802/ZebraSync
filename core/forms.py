@@ -9,4 +9,3 @@ class ZipUploadForm(forms.Form):
         if not file.name.lower().endswith(".zip"):
             raise forms.ValidationError("Only .zip files are allowed.")
         return file
-# test

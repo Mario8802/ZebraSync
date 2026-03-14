@@ -69,4 +69,3 @@ def run_sync(job_id: int) -> None:
 
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
-# 123
